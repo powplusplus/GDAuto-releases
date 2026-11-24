@@ -19,8 +19,8 @@ Press **Stop** or Escape to end a run.
 
 Worker threads on all CPU cores but one (fewer when memory is short) play the level in the mod's own copy of the game's
 physics and triggers. They retry from the deepest safe point, narrow to single-step timing where an input has to be
-frame-perfect, and back up when stuck. A level the workers cannot play is searched inside the game instead, on one
-thread, which is much slower. Either way, every finished route is replayed in the real game before it is offered.
+frame-perfect, and back up when stuck. Every finished route is replayed in the real game before it is offered. If the
+copy plays a level differently from the game, the run stops and says where, instead of offering a route that fails.
 
 ## Macros
 
@@ -62,6 +62,39 @@ macros replay the same:
 
 Turn the setting off to leave normal play untouched by the mod. During a search these always apply.
 
+## Error codes
+
+A run that stops, or a save that fails, shows a code. The Geode log (Geode settings, open the logs folder) has the
+details.
+
+| Code | What happened | What to do |
+|---|---|---|
+| GDA-101 | The level didn't start within a minute. | Retry. Close other heavy programs. |
+| GDA-102 | The mod couldn't make its hidden copy of the level. | Retry; restart the game if it keeps happening. |
+| GDA-103 | Two-player or platformer level on a game build the mod can't read those from. | Use Geometry Dash 2.2081. |
+| GDA-104 | The game stopped playing the level. | Turn off mods that pause or freeze levels, then retry. |
+| GDA-105 | An error while the run was going, often out of memory. | Close other programs and retry. If it keeps happening, report it with the log. |
+| GDA-201 | Windows wouldn't start the search threads. | Restart the game. |
+| GDA-202 | The mod couldn't copy everything in this level. | Retry. If it keeps happening, report it with the level ID. |
+| GDA-203 | The level has random enter effects, and another mod owns the random numbers they need. | Turn off mods that change randomness, then retry. |
+| GDA-204 | Not enough free memory (RAM and page file) for the search. | Close other programs, or let Windows grow its page file. |
+| GDA-205 | The search reached a game function it has no copy of. | Report it with the level ID. |
+| GDA-206 | Another error inside the search. | Report it with the level ID and the log. |
+| GDA-301 | The game dies at a point where the search survives. | Turn off physics mods (speedhack, TPS or FPS changers). Otherwise report it with the level ID and the step. |
+| GDA-302 | Six found routes played differently in the game. | As GDA-301. |
+| GDA-303 | Found routes don't replay the same from the level start. | As GDA-301. |
+| GDA-401 | The Windows save dialog failed. | Retry. The route is also kept in the mod's `found` folder. |
+| GDA-402 | The macro file couldn't be written. | Save to another folder. The route is also kept in the mod's `found` folder. |
+
+## Requirements
+
+- Windows (64-bit), Geometry Dash 2.2081, Geode.
+- Any CPU that runs the game. The search uses all cores but one, and fewer when free memory is short: each search
+  thread needs about 300 MB to 600 MB on detailed levels.
+- Works with Mega Hack and other bots for playing the saved macro. Mods that change physics while the search runs
+  (speedhack, TPS or FPS changers) make found routes fail in the game: turn them off first. Noclip and similar mods
+  are fine: the search sees deaths before they hide them.
+
 ## Tips
 
 - Turn off **Show Live View** for the fastest search.
@@ -75,6 +108,6 @@ Download `aimas.gdauto-bruteforce.geode` from the [latest release](https://githu
 
 ## Issues
 
-Report bugs in the [issue tracker](https://github.com/powplusplus/GDAuto-releases/issues) with the level ID and your Geode log.
+Report bugs in the [issue tracker](https://github.com/powplusplus/GDAuto-releases/issues) with the level ID, the error code if there is one, and your Geode log.
 
 This repository holds releases only. The source is not public.

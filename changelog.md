@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.0.1
+
+- Levels with animated objects that fade out when they leave the screen (for example Dash) are searched on all CPU
+  cores again.
+- Every game function the search can reach is now ported.
+- The floor and ceiling of ship, UFO, wave, swing and ball sections slide in exactly like in the game. The search used
+  to keep them where they were when the run started, so routes through those sections could fail in the game.
+- The slow one-thread search inside the game is gone. If the search can't play a level exactly like the game, the
+  run stops and says why.
+- Every stopped run and failed save shows an error code (GDA-101 to GDA-402), listed with what to do in the mod's
+  description.
+- Running out of memory during a run stops it with a message instead of closing the game.
+
 ## v1.0.0
 
 First public release.
